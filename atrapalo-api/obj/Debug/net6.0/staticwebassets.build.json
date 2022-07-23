@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "1H9ekRzbGxaJFocY9y1t5yzhOHzu6tT5QZOkePH4Nt4=",
+  "Source": "atrapalo-api",
+  "BasePath": "_content/atrapalo-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
