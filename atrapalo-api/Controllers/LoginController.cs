@@ -7,7 +7,11 @@ namespace atrapalo_api.Controllers
     [Route("api/login")]
     public class LoginController : Controller
     {
-
+        private readonly AplicationDbContext _context;
+        public LoginController(AplicationDbContext context)
+        {
+            this._context = context;
+        }
 
         [HttpGet]
         public Response Get() {
@@ -29,6 +33,30 @@ namespace atrapalo_api.Controllers
             return response; 
         
         }
-       
+
+        [HttpPost]
+        [Route("registrate")]
+        public async Task<ActionResult<Response>>  Post( Persona p)
+        {
+            try
+            {
+                _context.Add(p);
+                await _context.SaveChangesAsync();
+                var response = new Response()
+                {
+                    Status = 200,
+                    Messagge = "Creado correctamente",
+                };
+                return response;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
     }
 }
