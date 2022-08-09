@@ -8,10 +8,6 @@ var startup = new Startup(builder.Configuration);
 
 startup.ConfigureServices(builder.Services);
 
-//var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
-//builder.Services.AddDbContext<AplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
-
 var app = builder.Build();
 startup.Configure(app, app.Environment);
 app.Run();

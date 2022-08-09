@@ -31,12 +31,30 @@ namespace atrapalo_api.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var marcas = from m in _context.Marca
+                             select m;
+                return Ok(marcas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPut]
         public async Task<IActionResult> Put(Marca marca)
         {
             try
             {
+                if (marca.Id != null)
+                {
+
+                }
                 var existe = await _context.Marca.AnyAsync(x=> x.Id == marca.Id);
                 if (existe)
                 {
