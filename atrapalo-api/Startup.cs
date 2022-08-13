@@ -18,10 +18,12 @@ namespace atrapalo_api
 
             services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             services.AddDbContext<AplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
             
             services.AddEndpointsApiExplorer();
+            
             services.AddSwaggerGen();
 
             services.AddSwaggerGen( c =>

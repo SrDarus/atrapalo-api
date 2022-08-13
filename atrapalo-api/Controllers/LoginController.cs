@@ -1,4 +1,5 @@
-﻿using atrapalo_api.Entities;
+﻿using atrapalo_api.DTO;
+using atrapalo_api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,36 +15,38 @@ namespace atrapalo_api.Controllers
             this._context = context;
         }
 
-        [HttpGet]
-        public Response Get() {
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(Persona per) {
 
-            var persona = new Persona()
+            try
             {
-                Rut = 16268294,
-                Dv = "6",
-                Nombres = "Claudio Ivan",
-                Apellidos = "Vargas Lillo",
-                Correo = "claudiovargaslillo@gmail.com"
+                var usuario = await _context.Personas.AnyAsync((p) => p.Rut.Equals(per.Rut) && p.Password.Equals(per.Password));
 
-            };
-            var response = new Response()
+                var response = new Response()
+                {
+                    Status = 200,
+                    Data = per,
+                };
+                return Ok(usuario);
+            }
+            catch (Exception ex)
             {
-                Status = 200,
-                Data = persona,
-            };
-            return response;
+
+                return NotFound(ex);
+            }
 
         }
 
         [HttpPost]
         [Route("registrate")]
-        public async Task<ActionResult<Response>> Post(Persona p)
+        public async Task<ActionResult> Post(Persona p)
         {
             try
             {
                 _context.Add(p);
-                await _context.SaveChangesAsync();
-                return Ok();
+                var respuesta  = await _context.SaveChangesAsync();
+                return Ok(respuesta);
             }
             catch (Exception ex)
             {

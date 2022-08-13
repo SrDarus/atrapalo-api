@@ -11,17 +11,34 @@ using atrapalo_api;
 namespace atrapalo_api.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    [Migration("20220808033821_Inicial")]
-    partial class Inicial
+    [Migration("20220811052613_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("atrapalo_api.Entities.Color", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Color");
+                });
 
             modelBuilder.Entity("atrapalo_api.Entities.Marca", b =>
                 {
@@ -31,30 +48,13 @@ namespace atrapalo_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Marca");
-                });
-
-            modelBuilder.Entity("atrapalo_api.Entities.Modelo", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Modelo");
                 });
 
             modelBuilder.Entity("atrapalo_api.Entities.Persona", b =>
@@ -81,12 +81,12 @@ namespace atrapalo_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rut")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VehiculoId")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rut")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -101,62 +101,51 @@ namespace atrapalo_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<string>("ColorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("ColorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IdColor")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IdMarca")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("MarcaId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ModeloId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("PersonaId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ColorId");
+
                     b.HasIndex("MarcaId");
-
-                    b.HasIndex("ModeloId");
-
-                    b.HasIndex("PersonaId")
-                        .IsUnique();
 
                     b.ToTable("Vehiculo");
                 });
 
             modelBuilder.Entity("atrapalo_api.Entities.Vehiculo", b =>
                 {
+                    b.HasOne("atrapalo_api.Entities.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("atrapalo_api.Entities.Marca", "Marca")
                         .WithMany()
                         .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("atrapalo_api.Entities.Modelo", "Modelo")
-                        .WithMany()
-                        .HasForeignKey("ModeloId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("atrapalo_api.Entities.Persona", "Persona")
-                        .WithOne("Vehiculo")
-                        .HasForeignKey("atrapalo_api.Entities.Vehiculo", "PersonaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Color");
 
                     b.Navigation("Marca");
-
-                    b.Navigation("Modelo");
-
-                    b.Navigation("Persona");
-                });
-
-            modelBuilder.Entity("atrapalo_api.Entities.Persona", b =>
-                {
-                    b.Navigation("Vehiculo")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -32,7 +32,7 @@ namespace atrapalo_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
             try
             {
@@ -51,10 +51,10 @@ namespace atrapalo_api.Controllers
         {
             try
             {
-                if (marca.Id != null)
-                {
+                //if (marca.Id != null)
+                //{
 
-                }
+                //}
                 var existe = await _context.Marca.AnyAsync(x=> x.Id == marca.Id);
                 if (existe)
                 {
