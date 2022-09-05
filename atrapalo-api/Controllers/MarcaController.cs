@@ -32,12 +32,13 @@ namespace atrapalo_api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var marcas = from m in _context.Marca
-                             select m;
+                //var marcas = from m in _context.Marca
+                //             select m;
+                var marcas = await _context.Marca.ToListAsync();
                 return Ok(marcas);
             }
             catch (Exception ex)

@@ -5,6 +5,8 @@ C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\atrapalo-api.deps.json
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\atrapalo-api.runtimeconfig.json
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\atrapalo-api.dll
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\atrapalo-api.pdb
+C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\AutoMapper.dll
+C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\Humanizer.dll
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\.net\atrapalo-api\atrapalo-api\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll

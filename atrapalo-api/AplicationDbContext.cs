@@ -10,9 +10,12 @@ namespace atrapalo_api
 
         }
 
-        public DbSet<Persona> Personas { get; set; }
+        public DbSet<Persona> Persona { get; set; }
         public DbSet<Vehiculo> Vehiculo { get; set; }
         public DbSet<Marca> Marca { get; set; }
         public DbSet<Color> Color { get; set; }
+        public DbSet<Tipo> Tipo { get; set; }
+        public DbSet<Robo> Robo { get; set; }
+        public DbSet<Ubicacion> Ubicacion { get; set; }
     }
 }

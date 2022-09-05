@@ -21,19 +21,33 @@ namespace atrapalo_api
 
             services.AddDbContext<AplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
-            
+
             services.AddEndpointsApiExplorer();
-            
+
             services.AddSwaggerGen();
 
-            services.AddSwaggerGen( c =>
+            services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApíAtrapalo", Version = "v0"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApíAtrapalo", Version = "v0" });
+            });
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "AllowOrigin",
+                    builder => {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
             });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AllowOrigin");
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -50,6 +64,7 @@ namespace atrapalo_api
             {
                 endPoints.MapControllers();
             });
+
         }
     }
 }

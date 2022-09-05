@@ -1,5 +1,7 @@
 ﻿using atrapalo_api.DTO;
 using atrapalo_api.Entities;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,18 +12,21 @@ namespace atrapalo_api.Controllers
     public class LoginController : Controller
     {
         private readonly AplicationDbContext _context;
-        public LoginController(AplicationDbContext context)
+        private readonly IMapper mapper;
+
+        public LoginController(AplicationDbContext context, IMapper mapper)
         {
             this._context = context;
+            this.mapper = mapper;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(Persona per) {
+        public async Task<IActionResult> Login(Login per ) {
 
             try
             {
-                var usuario = await _context.Personas.AnyAsync((p) => p.Rut.Equals(per.Rut) && p.Password.Equals(per.Password));
+                var usuario = await _context.Persona.AnyAsync((p) => p.Correo.Equals(per.Correo) && p.Password.Equals(per.Password));
 
                 var response = new Response()
                 {
@@ -40,17 +45,19 @@ namespace atrapalo_api.Controllers
 
         [HttpPost]
         [Route("registrate")]
-        public async Task<ActionResult> Post(Persona p)
+        [AllowAnonymous]
+        public async Task<ActionResult> Post(PersonaNuevoDto perDto)
         {
             try
             {
-                _context.Add(p);
+                var per = mapper.Map<Persona>(perDto);  
+                _context.Add(per);  
                 var respuesta  = await _context.SaveChangesAsync();
                 return Ok(respuesta);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(ex);
             }
 
         }
@@ -84,7 +91,7 @@ namespace atrapalo_api.Controllers
             try
             {
                 var response = new Response();
-                var existe = await _context.Personas.AnyAsync(x => x.Id == id);
+                var existe = await _context.Persona.AnyAsync(x => x.Id == id);
                 if (existe) {
                     _context.Remove(new Persona() { Id = id });
                     var respuesta  = _context.SaveChangesAsync().Result;
